@@ -214,7 +214,7 @@ export default function Home() {
 
   const getStakeDetails = async () => {
     var BN = web3.utils.BN;
-    
+
     // load details:
     const stk_cnt = new web3.eth.Contract(stake_abi, stake_addr);
     const bals = await stk_cnt.methods.lockedBalances(address).call();
@@ -390,17 +390,27 @@ export default function Home() {
       bal_eth:    parseFloat(web3.utils.fromWei((bal_pc * pool_eth_qty).toString())).toLocaleString(),
       //total:      parseFloat(web3.utils.fromWei(revenue.toString()) + my_pool_value).toLocaleString()
       total:      (parseFloat(web3.utils.fromWei(revenue.toString())) + parseFloat(my_pool_value)).toLocaleString()
-      ,apr:        (new BN(53516693286 * 10**18)).toString()
+      //,apr:        (new BN(53516693286 * 10**18)).toString()
     }))
 
     setPool(Object.assign({}, pool, {
-      total_slp:  parseFloat(supply).toLocaleString(),
-      value:      parseFloat(pool_eth_val).toLocaleString(),
-      qty_eth:    parseFloat(web3.utils.fromWei(pool_eth_qty)).toLocaleString(),
-      qty_uwu:    parseFloat(web3.utils.fromWei(pool_uwu_qty)).toLocaleString(),
+      total_slp:    supply,
+      total_slp_d:  parseFloat(supply).toLocaleString(),
+      value:        pool_eth_val,
+      value_d:      parseFloat(pool_eth_val).toLocaleString(),
+      qty_eth:      parseFloat(web3.utils.fromWei(pool_eth_qty)).toLocaleString(),
+      qty_uwu:      parseFloat(web3.utils.fromWei(pool_uwu_qty)).toLocaleString(),
     }))
 
   }
+
+  React.useEffect(() => {
+    console.log(staked)
+  }, [staked])
+
+  React.useEffect(() => {
+    console.log(pool)
+  }, [pool])
 
 
   const bgAnimate = () => {
@@ -439,7 +449,7 @@ export default function Home() {
 
         <>
           <Row className="mt-4">
-{staked.apr}
+
             <Col md={5}>
               <Row>
                 <Col>
@@ -451,31 +461,39 @@ export default function Home() {
                           <Col>
                             <Stack>
                               <div className="text-muted">SLP Total</div>
-                              <h4>{pool.total_slp}</h4>
+                              <h4>{pool.total_slp_d}</h4>
                             </Stack>
                           </Col>
                           <Col>
                             <Stack>
                               <div className="text-muted">Pool Value</div>
-                              <h4>$ {pool.value}</h4>
+                              <h4>$ {pool.value_d}</h4>
                             </Stack>
                           </Col>
                         </Row>
                         <Row className="mt-4">
                           <Col>
                             <Stack>
-                              <div className="text-muted">ETH Qty</div>
-                              <h4>{pool.qty_eth}</h4>
-                            </Stack>
-                          </Col>
-                          <Col>
-                            <Stack>
                               <div className="text-muted">UwU Qty</div>
                               <h4>{pool.qty_uwu}</h4>
                             </Stack>
                           </Col>
+                          <Col>
+                            <Stack>
+                              <div className="text-muted">ETH Qty</div>
+                              <h4>{pool.qty_eth}</h4>
+                            </Stack>
+                          </Col>
                         </Row>
                         
+
+                        <Row className="mt-4 text-center">
+                          <Col>
+                            <h4><small className="text-muted">LP Token Price:</small> $ {(pool.value/pool.total_slp).toLocaleString()}</h4>
+                          </Col>
+                        </Row>
+
+
                       </Card.Body>
                     </Card.Body>
                   </Card>
@@ -484,7 +502,7 @@ export default function Home() {
 
               <Row className="mt-4">
                 <Col>
-                  
+                  {staked.apr}
                 </Col>
               </Row>
             </Col>
