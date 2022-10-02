@@ -456,7 +456,7 @@ export default function Home() {
                   <Card className={styles.panel}>
                     <Card.Body className="text-light">
                       <Card.Title className="text-center">Sushi Pool</Card.Title>
-                      <Card.Body className="text-center">
+                      <Card.Text className="text-center">
                         <Row>
                           <Col>
                             <Stack>
@@ -489,12 +489,12 @@ export default function Home() {
 
                         <Row className="mt-4 text-center">
                           <Col>
-                            <h4><small className="text-muted">LP Token Price:</small> $ {(pool.value/pool.total_slp).toLocaleString()}</h4>
+                            <h4><small className="text-muted">LP Token Price:</small> $ {((pool.value/pool.total_slp) || 0).toLocaleString()}</h4>
                           </Col>
                         </Row>
 
 
-                      </Card.Body>
+                      </Card.Text>
                     </Card.Body>
                   </Card>
                 </Col>
@@ -502,7 +502,16 @@ export default function Home() {
 
               <Row className="mt-4">
                 <Col>
-                  {staked.apr}
+                  <Card className={styles.panel}>
+                    <Card.Body className="text-light">
+                      <Card.Title className="text-center">
+                        <Stack>
+                          <div className="text-muted">UwU-ETH LP Rewards APR</div>
+                          <h4>{((930 / (pool.value/pool.total_slp)) || 0).toLocaleString()}%</h4>
+                        </Stack>
+                      </Card.Title>
+                    </Card.Body>
+                  </Card>
                 </Col>
               </Row>
             </Col>
@@ -511,7 +520,7 @@ export default function Home() {
               <Card className={styles.panel}>
                 <Card.Body className="text-light">
                   <Card.Title className="text-center">LP Stake</Card.Title>
-                  <Card.Body>
+                  <Card.Text>
                     <Row className="text-center">
                       <Col>
                         <Stack>
@@ -528,7 +537,7 @@ export default function Home() {
                       </Col>
                       <Col>
                         <Stack>
-                          <div className="text-muted">Rev</div>
+                          <div className="text-muted">Rewards</div>
                           <h4>$ {staked.rev}</h4>
                         </Stack>
                       </Col>
@@ -543,6 +552,7 @@ export default function Home() {
                     <Row className="mt-4">
                       <Col md={{span:10, offset:1}}>
                         <hr />
+                        <Card.Title className="text-center">Pending Rewards</Card.Title>
                         <Table className="text-light" borderless>
                           <thead>
                             <tr>
@@ -569,7 +579,7 @@ export default function Home() {
                       </Col>
                     </Row>
                     
-                  </Card.Body>
+                  </Card.Text>
                 </Card.Body>
               </Card>
             </Col>
