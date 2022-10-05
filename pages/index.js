@@ -356,7 +356,12 @@ export default function Home() {
     const pool_eth_val = web3.utils.fromWei(sushi_reserves._reserve1) * eth_price;
     // const pool_uwu_val = web3.utils.fromWei(pool_eth_val / sushi_reserves._reserve0);
 
+    const uwu_price = pool_eth_val/web3.utils.fromWei(pool_uwu_qty);
+    const pool_uwu_val = web3.utils.fromWei(sushi_reserves._reserve0) * uwu_price;
+
     // console.log(sushi_reserves)
+
+    const pool_value = pool_eth_val + pool_uwu_val;
 
 
     let supply = await sushi_cnt.methods.totalSupply().call()
@@ -396,8 +401,8 @@ export default function Home() {
     setPool(Object.assign({}, pool, {
       total_slp:    supply,
       total_slp_d:  parseFloat(supply).toLocaleString(),
-      value:        pool_eth_val,
-      value_d:      parseFloat(pool_eth_val).toLocaleString(),
+      value:        pool_value,//pool_eth_val,
+      value_d:      parseFloat(pool_value).toLocaleString(),//parseFloat(pool_eth_val).toLocaleString(),
       qty_eth:      parseFloat(web3.utils.fromWei(pool_eth_qty)).toLocaleString(),
       qty_uwu:      parseFloat(web3.utils.fromWei(pool_uwu_qty)).toLocaleString(),
     }))
