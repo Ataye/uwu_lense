@@ -86,7 +86,16 @@ const uwu_supported_tokens = {
   "0x02738ef3f8d8D3161DBBEDbda25574154c560dAe": {
     name: "SIFU",
     cgapi_id: "sifu-vision"
+  },
+  // "0xaac1d67f1C17EC01593D76E831C51a4F458Dc160": {
+  //   name: "USDT",
+  //   cgapi_id: "tether"
+  // },
+  "0x24959F75d7BDA1884f1Ec9861f644821Ce233c7D": {
+    name: "USDT",
+    cgapi_id: "tether"
   }
+
 }
 
 
@@ -252,13 +261,13 @@ export default function Home() {
 
 
     const earned = await stk_cnt.methods.earnedBalances(address).call();
-    console.log(earned)
+    console.log('earned', earned)
 
 
     // load claimable rewards:
     const rewards = await stk_cnt.methods.claimableRewards(address).call();
     //const val = rewards.reduce(async (p, reward) => {
-
+// console.log(rewards)
     /// COINGECKO LOOKUPS
     let lookups = rewards.reduce((prv, reward) => {
       const u = uwu_supported_tokens[reward.token];
@@ -273,11 +282,12 @@ export default function Home() {
 
     // get prices from cg:
     const price = await axios.get(`https://api.coingecko.com/api/v3/simple/price?ids=${lookups}&vs_currencies=usd`)
-
+// console.log('cg', price)
     const revenue = rewards.reduce((prv, reward) => {
       const u = uwu_supported_tokens[reward.token];
-
-      if (!price.data[u.cgapi_id])
+      // if (!u || !u.cgapi_id)
+      //   console.log('not found', reward.token)
+      if (!u || !price.data[u.cgapi_id])
         return prv;
 
       const usd = price.data[u.cgapi_id].usd,
